@@ -1,0 +1,129 @@
+set nocompatible
+filetype off
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.dotfiles/vim/bundle/vundle/
+call vundle#rc("~/.dotfiles/vim/bundle")
+
+" let Vundle manage Vundle, required
+Bundle 'gmarik/vundle'
+
+" =================
+" Customs & Plugins
+" =================
+
+filetype plugin indent on
+syntax on
+syntax enable
+Bundle 'Syntastic'
+
+let mapleader = ","
+
+set backspace=2 " make backspace work like most other apps
+set smartindent
+set expandtab
+set shiftwidth=2
+set softtabstop=2
+
+set foldmethod=indent   "fold based on indent
+set foldnestmax=10      "deepest fold is 10 levels
+set nofoldenable        "dont fold by default
+set foldlevel=1         "this is just what i use
+
+
+" Status
+source /usr/local/lib/python2.7/site-packages/powerline/bindings/vim/plugin/powerline.vim
+set laststatus=2
+
+" Explorer & navigation
+Bundle 'scrooloose/nerdtree'
+Bundle 'Lokaltog/vim-easymotion'
+Bundle 'kien/ctrlp.vim'
+set runtimepath^=~/.dotfiles/vim/bundle/ctrlp.vim
+
+" Mappings
+map <C-n> :NERDTreeToggle<CR>
+
+" HTML clean
+Bundle 'Valloric/MatchTagAlways'
+
+" highlight over 80chars (>=7.3)
+let &colorcolumn=join(range(81,999),",")
+
+" Color and Scheme
+Bundle 'altercation/vim-colors-solarized'
+set t_Co=256
+let g:solarized_termcolors=256
+set background=dark
+colorscheme solarized
+
+" Table wiki realign
+" Assuming your <Leader> is \:
+" \tl or \tt - turns selected lines into table (left-aligned text)
+Bundle 'Stormherz/tablify'
+
+" custom Shortcuts
+Bundle 'snipMate'
+
+" Python
+Bundle 'tell-k/vim-autopep8'
+Bundle 'nvie/vim-flake8'
+let g:flake8_ignore="E501"
+Bundle 'davidhalter/jedi-vim'
+let g:jedi#popup_on_dot = 0
+let g:jedi#show_call_signatures = "2"
+autocmd Filetype python set ts=8 et sw=4 sts=4
+autocmd BufWritePost *.py call Flake8()
+
+" Git
+Bundle 'fugitive.vim'
+set diffopt+=vertical
+
+" Introspection
+" :TagbarToggle
+Bundle 'Tagbar' 
+
+" Cleanup source
+Bundle 'maksimr/vim-jsbeautify'
+Bundle 'einars/js-beautify'
+" set path to js-beautify file
+let g:jsbeautify_file = fnameescape(fnamemodify(expand("<sfile>"), ":h")."/bundle/js-beautify/beautify.js")
+
+" Transform django tags, to html fake tags to be understood by HtmlBeautify
+function! CleanHTML()
+    let save_cursor = getpos(".")
+    execute '%s/{% /<djdiv>/g'
+    execute '%s/ %}/<\/djdiv>/g'
+    execute 'call HtmlBeautify()'
+    execute '%s/<djdiv>/{% /g'
+    execute '%s/<\/djdiv>/ %}/g'
+    call setpos('.', save_cursor)
+endfunction
+map <C-h> :silent call CleanHTML()
+map <C-j> :silent call JsBeautify()
+
+" ctrl+n several times in normal mode
+Bundle 'terryma/vim-multiple-cursors'
+
+" Javascript syntastic
+" sudo npm install -g jshint 
+
+" Javascript
+Bundle 'pangloss/vim-javascript'
+Bundle 'nathanaelkane/vim-indent-guides'
+Bundle 'scrooloose/syntastic'
+let g:syntastic_check_on_open=0
+
+" Quick edit
+" http://designshack.net/articles/css/7-awesome-emmet-html-time-saving-tips/
+" |<ctrl-y>,| to generate html
+Bundle 'mattn/emmet-vim'
+
+" Brief help
+" :BundleList          - list configured bundles
+" :BundleInstall(!)    - install (update) bundles
+" :BundleSearch(!) foo - search (or refresh cache first) for foo
+" :BundleClean(!)      - confirm (or auto-approve) removal of unused bundles
+"
+" see :h vundle for more details or wiki for FAQ
+" NOTE: comments after Bundle commands are not allowed.
