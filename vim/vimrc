@@ -103,7 +103,7 @@ map <C-h> :silent call CleanHTML()
 map <C-j> :silent call JsBeautify()
 
 " ctrl+n several times in normal mode
-Bundle 'terryma/vim-multiple-cursors'
+Bundle 'kristijanhusak/vim-multiple-cursors'
 
 " Javascript syntastic
 " sudo npm install -g jshint 
